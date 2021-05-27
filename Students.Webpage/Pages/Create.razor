@@ -2,7 +2,7 @@
 
 <h1>Create student</h1>
 
-<Paper Width="920px" Margin=@(new Border("0px", "30px")) Padding=@(new Border("60px", "20px" ))>
+<Paper Width="100%" Margin=@(new Border("0px", "30px")) Padding=@(new Border("60px", "20px" ))>
     <EditForm OnValidSubmit=@Submit Model=@Model>
         <DataAnnotationsValidator />
         <TextField @bind-Value=@Model.Name Label="Name" ValidationExpression=@(() => Model.Name) />
