@@ -1,0 +1,35 @@
+﻿@page "/create"
+
+<h1>Create student</h1>
+
+<Paper Width="920px" Margin=@(new Border("0px", "30px")) Padding=@(new Border("60px", "20px" ))>
+    <EditForm OnValidSubmit=@Submit Model=@Model>
+        <DataAnnotationsValidator />
+        <TextField @bind-Value=@Model.Name Label="Name" ValidationExpression=@(() => Model.Name) />
+        <NumericField @bind-Value=@Model.Year Label="Year" Min="1" Max="12" Step="1" Format="n0" ValidationExpression=@(() => Model.Year) />
+        <DatePicker @bind-Value=@Model.DateOfBirth Label="Birth date" ValidationExpression=@(() => Model.DateOfBirth) Maximum=@DateTime.Today />
+        <TextField @bind-Value=@Model.Phone Label="Phone" ValidationExpression=@(() => Model.Phone) />
+        <Button Type="submit" Width="400px" Height="56px" Margin=@Border.FromBottom("20px")>Create </Button>
+    </EditForm>
+</Paper>
+
+@code
+{
+
+    [Inject]
+    protected ToastService Toaster { get; set; }
+
+    [Inject]
+    private StudentService StudentService { get; set; }
+
+    private Student Model { get; set; } = new Student();
+
+    private async Task Submit()
+    {
+        var response = await StudentService.Create(Model);
+        if (response.IsSuccess)
+        {
+            await Toaster.Add("Succesfully created!", ToastType.Success);
+        }
+    }
+}

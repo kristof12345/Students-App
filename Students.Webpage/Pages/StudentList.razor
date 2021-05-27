@@ -1,0 +1,34 @@
+﻿@page "/"
+
+<h1>Students</h1>
+
+<div style="display: flex; width: 100%; justify-content: space-between;">
+    <div>Name</div>
+    <div>Year</div>
+    <div>DateOfBirth</div>
+    <div>Phone</div>
+</div>
+
+@foreach (var student in Students)
+{
+    <div style="display: flex; width: 100%; justify-content: space-between;">
+        <div>@student.Name</div>
+        <div>@student.Year</div>
+        <div>@student.DateOfBirth?.ToShortDateString()</div>
+        <div>@student.Phone</div>
+    </div>
+}
+
+
+@code
+{
+    [Inject]
+    private StudentService StudentService { get; set; }
+
+    private List<Student> Students { get; set; } = new List<Student>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Students = await StudentService.ListStudents();
+    }
+}

@@ -1,0 +1,38 @@
+﻿@page "/login"
+
+<h1>Login</h1>
+
+<Paper Width="550px">
+    <Vertical>
+        <EditForm OnValidSubmit=@Submit Model=@Model style="padding-left: 75px; padding-right: 75px; width: auto;">
+            <DataAnnotationsValidator />
+            <TextField @bind-Value=@Model.Username Label="Username" ValidationExpression=@(() => Model.Username) />
+            <TextField @bind-Value=@Model.Password Label="Password" Type=@InputType.Password ValidationExpression=@(() => Model.Password) />
+            <Button Type="submit" Width="400px" Height="56px" Margin=@Border.FromBottom("20px")>Login </Button>
+        </EditForm>
+    </Vertical>
+</Paper>
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    protected ToastService Toaster { get; set; }
+
+    [Inject]
+    private LoginService LoginService { get; set; }
+
+    private Login Model { get; set; } = new Login();
+
+    private async Task Submit()
+    {
+        var response = await LoginService.Login(Model);
+        if (response.IsSuccess)
+        {
+            await Toaster.Add("Succesfully registered!", ToastType.Success);
+            NavigationManager.NavigateTo("./");
+        }
+    }
+}

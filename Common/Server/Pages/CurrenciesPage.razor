@@ -1,0 +1,11 @@
+﻿@page "/currencies"
+@inherits AppPage
+
+@if (LoginService.User == null)
+{
+    <InvestmentApp.Webpage.Components.Login.LoginForm />
+}
+else
+{
+    <InvestmentApp.Webpage.Pages.CurrenciesPage />
+}

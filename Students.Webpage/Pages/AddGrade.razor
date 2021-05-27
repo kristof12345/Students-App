@@ -1,0 +1,55 @@
+﻿@page "/grade"
+
+<h1>Add grade</h1>
+
+<NumericField @bind-Value=@Model.Value Label="Grade" Min="1" Max="5" Step="1" Format="n0" Width="200px" />
+
+@foreach (var student in Students)
+{
+    <div style="display: flex; width: 100%; justify-content: space-between;">
+        <div>@student.Name</div>
+        <Button OnClick=@(() => Submit(student.Id)) Height="56px" Margin=@Border.FromBottom("20px")>Add </Button>
+    </div>
+}
+
+
+@code
+{
+    [Inject]
+    public NavigationManager NavigationManager { get; set; }
+
+    [Inject]
+    protected ToastService Toaster { get; set; }
+
+    [Inject]
+    private StudentService StudentService { get; set; }
+
+    [Inject]
+    private LoginService UserService { get; set; }
+
+    private List<Student> Students { get; set; } = new List<Student>();
+
+    private Grade Model { get; set; } = new Grade();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Students = await StudentService.ListStudents();
+    }
+
+    protected override void OnAfterRender(bool isFirst)
+    {
+        if(!UserService.IsLoggedIn) NavigationManager.NavigateTo("./login");
+    }
+
+    private async Task Submit(long id)
+    {
+        var response = await StudentService.AddGrade(id, Model);
+        if (response.IsSuccess)
+        {
+            await Toaster.Add("Succesfully added!", ToastType.Success);
+        } else
+        {
+            await Toaster.Add(response.Content, ToastType.Danger);
+        }
+    }
+}

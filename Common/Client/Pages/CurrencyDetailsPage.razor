@@ -1,0 +1,17 @@
+﻿@page "/currencies/{id}"
+@inherits AppPage
+
+@if (LoginService.User == null)
+{
+    <InvestmentApp.Webpage.Components.Login.LoginForm />
+}
+else
+{
+    <InvestmentApp.Webpage.Pages.CurrencyDetailsPage CurrencyId=@id />
+}
+
+@code
+{
+    [Parameter]
+    public string id { get; set; }
+}

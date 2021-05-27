@@ -1,0 +1,31 @@
+﻿@page "/"
+@namespace WebApp.Server.Pages
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <base href="/" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Investment App</title>
+    <link rel="icon" href="./images/investment-icon-96.png" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.20/lodash.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+
+    <link href="./styles/material.css" rel="stylesheet" />
+    <link href="./styles/styles.css" rel="stylesheet" />
+    <link href="./styles/investment-app.css" rel="stylesheet" />
+
+</head>
+<body>
+    <app>
+        <component type="typeof(App)" render-mode="ServerPrerendered" />
+    </app>
+    <script src="_framework/blazor.server.js"></script>
+    <script src="./scripts/theme.js"></script>
+    <script src="./scripts/font-varela.js" rel="stylesheet"></script>
+</body>
+</html>
