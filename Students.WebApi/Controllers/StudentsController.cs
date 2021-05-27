@@ -37,7 +37,7 @@ namespace Students.WebApi.Controllers
             return StudentService.ListStatistics();
         }
 
-        [Protected]
+        [Authorize]
         [HttpPost("{id}")]
         public Task AddGrade([FromRoute] long id, [FromBody] Grade grade)
         {
