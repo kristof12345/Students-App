@@ -19,7 +19,7 @@ namespace Students.Logic
 
         public async Task<IEnumerable<Student>> ListStudents()
         {
-            return await Context.Students.AsNoTracking().ToListAsync();
+            return await Context.Students.AsNoTracking().OrderBy(s => s.Name).ToListAsync();
         }
 
         public async Task<IEnumerable<Statictic>> ListStatistics()
