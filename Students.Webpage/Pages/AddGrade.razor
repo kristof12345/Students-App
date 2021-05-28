@@ -4,52 +4,54 @@
 
 <NumericField @bind-Value=@Model.Value Label="Grade" Min="1" Max="5" Step="1" Format="n0" Width="200px" />
 
-@foreach (var student in Students)
-{
-    <div style="display: flex; width: 100%; justify-content: space-between;">
-        <div>@student.Name</div>
-        <Button OnClick=@(() => Submit(student.Id)) Height="56px" Margin=@Border.FromBottom("20px")>Add </Button>
-    </div>
-}
-
-
-@code
-{
-    [Inject]
-    public NavigationManager NavigationManager { get; set; }
-
-    [Inject]
-    protected ToastService Toaster { get; set; }
-
-    [Inject]
-    private StudentService StudentService { get; set; }
-
-    [Inject]
-    private LoginService UserService { get; set; }
-
-    private List<Student> Students { get; set; } = new List<Student>();
-
-    private Grade Model { get; set; } = new Grade();
-
-    protected override async Task OnInitializedAsync()
+<Horizontal Width="100%" Margin=@(new Border("0px", "30px")) Padding=@(new Border("60px", "20px" )) Wrap=@FlexWrap.Wrap HorizontalAlign=@HorizontalAlignment.SpaceAround>
+    @foreach (var student in Students)
     {
-        Students = await StudentService.ListStudents();
+        <Paper Width="100%" Margin=@(new Border("0px", "30px")) Padding=@(new Border("60px", "20px" )) MaxWidth="500px" Style="flex-direction: row; justify-content: space-between;">
+            <div>@student.Name</div>
+            <Button OnClick=@(() => Submit(student.Id)) Height="56px">Add </Button>
+        </Paper>
     }
+</Horizontal>
 
-    protected override void OnAfterRender(bool isFirst)
-    {
-        if(!UserService.IsLoggedIn) NavigationManager.NavigateTo("./login");
-    }
+    @code
+{
+        [Inject]
+        public NavigationManager NavigationManager { get; set; }
 
-    private async Task Submit(long id)
-    {
-        var response = await StudentService.AddGrade(id, Model);
-        if (response.IsSuccess)
+        [Inject]
+        protected ToastService Toaster { get; set; }
+
+        [Inject]
+        private StudentService StudentService { get; set; }
+
+        [Inject]
+        private LoginService UserService { get; set; }
+
+        private List<Student> Students { get; set; } = new List<Student>();
+
+        private Grade Model { get; set; } = new Grade();
+
+        protected override async Task OnInitializedAsync()
         {
-            await Toaster.Add("Succesfully added!", ToastType.Success);
-        } else
+            Students = await StudentService.ListStudents();
+        }
+
+        protected override void OnAfterRender(bool isFirst)
         {
-            await Toaster.Add(response.Content, ToastType.Danger);
+            if (!UserService.IsLoggedIn) NavigationManager.NavigateTo("./login");
+        }
+
+        private async Task Submit(long id)
+        {
+            var response = await StudentService.AddGrade(id, Model);
+            if (response.IsSuccess)
+            {
+                await Toaster.Add("Succesfully added!", ToastType.Success);
+            }
+            else
+            {
+                await Toaster.Add(response.Content, ToastType.Danger);
+            }
         }
     }
-}

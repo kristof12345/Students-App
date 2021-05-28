@@ -1,0 +1,27 @@
+﻿@page "/statistics"
+@using Syncfusion.Blazor.Grids
+
+<h1>Statistics</h1>
+
+<SfGrid DataSource=@Statistics>
+    <GridColumns>
+        <GridColumn Field=@nameof(Statistic.Name) HeaderText="Name" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Statistic.Average) HeaderText="Average" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Statistic.BestGrade) HeaderText="Best grade" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Statistic.NumberOfOneGrades) HeaderText="Number of ones" Width="100"></GridColumn>
+    </GridColumns>
+</SfGrid>
+
+
+@code
+{
+    [Inject]
+    private StudentService StudentService { get; set; }
+
+    private List<Statistic> Statistics { get; set; } = new List<Statistic>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        Statistics = await StudentService.ListStatistics();
+    }
+}

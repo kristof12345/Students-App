@@ -1,23 +1,16 @@
 ﻿@page "/"
+@using Syncfusion.Blazor.Grids
 
 <h1>Students</h1>
 
-<div style="display: flex; width: 100%; justify-content: space-between;">
-    <div>Name</div>
-    <div>Year</div>
-    <div>DateOfBirth</div>
-    <div>Phone</div>
-</div>
-
-@foreach (var student in Students)
-{
-    <div style="display: flex; width: 100%; justify-content: space-between;">
-        <div>@student.Name</div>
-        <div>@student.Year</div>
-        <div>@student.DateOfBirth?.ToShortDateString()</div>
-        <div>@student.Phone</div>
-    </div>
-}
+<SfGrid DataSource=@Students>
+    <GridColumns>
+        <GridColumn Field=@nameof(Student.Name) HeaderText="Name" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Student.DateOfBirth) HeaderText="Date of birth" Format="d" Type="ColumnType.Date" Width="200"></GridColumn>
+        <GridColumn Field=@nameof(Student.Year) HeaderText="School year" Width="100"></GridColumn>
+        <GridColumn Field=@nameof(Student.Phone) HeaderText="Phone" Width="200"></GridColumn>
+    </GridColumns>
+</SfGrid>
 
 
 @code
